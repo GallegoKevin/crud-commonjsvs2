@@ -1,8 +1,11 @@
 import axios from 'axios';
-import './style.css';
 
-const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6672da4cacd3cb34a859d109'; // Reemplaza con tu JSONBin URL
-const SECRET_KEY = '$2a$10$f5O9.cE15LSyJ9vpRQ7KAu.MdgQcQPw4JntLep2SCcrZGbO6HOpOW'; // Reemplaza con tu secret-key
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6672da4cacd3cb34a859d109';
+const SECRET_KEY = '$2a$10$SBr5PzXiwwXHafVuv7x4Duddw9bppVFfXpOU/GG3EyEYtUBwrEM6C';
+
+// Configuración global de Axios para manejar CORS
+axios.defaults.baseURL = '/api';
+axios.defaults.headers.common['X-Master-Key'] = SECRET_KEY;
 
 // VARIABLES
 loadListeners();
@@ -16,15 +19,15 @@ function loadListeners() {
 // FUNCTIONS
 async function readTasks() {
   try {
-    const { data } = await axios.get(JSONBIN_URL, {
+    const { data } = await axios.get(`${JSONBIN_URL}/record`, {
       headers: {
-        'X-Master-Key': SECRET_KEY
+        'Content-Type': 'application/json'
       }
     });
 
     const tbody = document.querySelector('#tasks-table tbody');
     tbody.innerHTML = '';
-    
+
     data.record.task.forEach(task => {
       const row = document.createElement('tr');
       row.innerHTML = `
@@ -51,13 +54,12 @@ async function createTask(event) {
   const taskToCreate = { title, author };
 
   try {
-    await axios.post(JSONBIN_URL, taskToCreate, {
+    await axios.post(`${JSONBIN_URL}/record`, taskToCreate, {
       headers: {
-        'X-Master-Key': SECRET_KEY,
         'Content-Type': 'application/json'
       }
     });
-    
+
     document.getElementById('task-form').reset();
     readTasks();
   } catch (error) {
@@ -71,7 +73,7 @@ async function deleteTask(event) {
   try {
     await axios.delete(`${JSONBIN_URL}/record/${idToTaskDelete}`, {
       headers: {
-        'X-Master-Key': SECRET_KEY
+        'Content-Type': 'application/json'
       }
     });
 
