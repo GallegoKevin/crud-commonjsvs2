@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor de Tareas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app" style="border: solid;">
+    <h2>GESTOR DE TAREAS</h2>
+
+    <form id="task-form" >
+      <div class="form-group" >
+        <label for="task-title" >Título:</label>
+        <input type="text" id="task-title" placeholder="Escribir tarea..." required>
+      </div>
+      <div class="form-group">
+        <label for="task-author">Autor:</label>
+        <input type="text" id="task-author" placeholder="Escribri nombre..." required>
+      </div>
+      <button type="submit" class="add-button">Añadir</button>
+    </form>
+    <table id="tasks-table">
+      <thead>
+        <tr>
+          <th>TÍTULO</th>
+          <th>AUTOR</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
