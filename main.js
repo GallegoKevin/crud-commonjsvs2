@@ -1,7 +1,8 @@
 import axios from 'axios';
 import './style.css';
 
-const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6672da4cacd3cb34a859d109'; // Reemplaza <tu_jsonbin_id> con el ID de tu JSONBin
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6672da4cacd3cb34a859d109'; // Reemplaza con tu JSONBin URL
+const SECRET_KEY = '$2a$10$f5O9.cE15LSyJ9vpRQ7KAu.MdgQcQPw4JntLep2SCcrZGbO6HOpOW'; // Reemplaza con tu secret-key
 
 // VARIABLES
 loadListeners();
@@ -17,14 +18,14 @@ async function readTasks() {
   try {
     const { data } = await axios.get(JSONBIN_URL, {
       headers: {
-        'secret-key': '$2a$10$SBr5PzXiwwXHafVuv7x4Duddw9bppVFfXpOU/GG3EyEYtUBwrEM6C'
+        'X-Master-Key': SECRET_KEY
       }
     });
 
     const tbody = document.querySelector('#tasks-table tbody');
     tbody.innerHTML = '';
     
-    data.task.forEach(task => {
+    data.record.task.forEach(task => {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${task.title}</td>
@@ -52,7 +53,8 @@ async function createTask(event) {
   try {
     await axios.post(JSONBIN_URL, taskToCreate, {
       headers: {
-        'secret-key': '$2b$10$<tu_secret_key>'
+        'X-Master-Key': SECRET_KEY,
+        'Content-Type': 'application/json'
       }
     });
     
@@ -67,9 +69,9 @@ async function deleteTask(event) {
   const idToTaskDelete = event.target.getAttribute('data-id');
 
   try {
-    await axios.delete(`${JSONBIN_URL}/${idToTaskDelete}`, {
+    await axios.delete(`${JSONBIN_URL}/record/${idToTaskDelete}`, {
       headers: {
-        'secret-key': '$2b$10$<tu_secret_key>'
+        'X-Master-Key': SECRET_KEY
       }
     });
 
